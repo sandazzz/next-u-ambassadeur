@@ -51,11 +51,6 @@ model VerificationToken {
 
   @@id([identifier, token])
 }
-// Enum pour les rôles
-enum RoleType {
-  ADMIN
-  AMBASSADOR
-}
 
 // Modèle pour la table User
 model User {
@@ -64,7 +59,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  role          RoleType?
+  role          String?
   credit        Int?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
