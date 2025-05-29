@@ -148,7 +148,7 @@ export function CreditsManagement() {
       const variants = {
         1: "default",
         2: "secondary",
-        3: "outline",
+        3: "outline-solid",
       } as const;
       return (
         <Badge variant={variants[position as keyof typeof variants]}>
@@ -316,7 +316,7 @@ export function CreditsManagement() {
                       key={ambassador.id}
                       className={`flex items-center justify-between p-3 rounded-lg border ${
                         position <= 3
-                          ? "bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200"
+                          ? "bg-linear-to-r from-yellow-50 to-orange-50 border-yellow-200"
                           : "bg-gray-50"
                       }`}
                     >
