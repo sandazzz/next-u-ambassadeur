@@ -1,13 +1,13 @@
-import { getAuthSession } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 
 export default async function Home() {
-  const session = await getAuthSession();
+  const session = await auth();
   console.log(session);
 
   if (session) {
     return (
       <div className="divide-y divide-muted w-full flex flex-col justify-center items-center">
-        {/* <pre>{JSON.stringify(session, null, 2)}</pre>*/}
+        {<pre>{JSON.stringify(session, null, 2)}</pre>}
       </div>
     );
   }

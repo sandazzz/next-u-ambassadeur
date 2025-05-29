@@ -1,10 +1,10 @@
 import { ThemeToggle } from "@/src/theme/ThemeToggle";
 import { LoginButton } from "@/src/features/layout/auth/LoginButton";
 import { UserProfile } from "@/src/features/layout/auth/UserProfile";
-import { getAuthSession } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 
 export const Header = async () => {
-  const session = await getAuthSession();
+  const session = await auth();
   return (
     <header className="border-b border-b-accent fixed top-0 z-20 left-0 right-0 bg-background">
       <div className="container flex items-center p-2 max-w-lg w-full m-auto gap-1">

@@ -1,28 +1,45 @@
-import { AuthOptions, getServerSession } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { env } from "@/lib/env";
-import { prisma } from "@/lib/prisma";
+import NextAuth, { type DefaultSession } from "next-auth";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import Google from "next-auth/providers/google";
+import prisma from "./prisma";
 
-export const authOption: AuthOptions = {
+declare module "next-auth" {
+  interface Session {
+    user: {
+      role: string;
+    } & DefaultSession["user"];
+  }
+}
+
+export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
-    GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      profile(profile) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+          role: profile.role ?? "user",
+        };
+      },
     }),
   ],
   callbacks: {
-    async signIn({ user }) {
-      if (user.email?.endsWith("next-u.fr")) {
-        return true;
+    session({ session }) {
+      if (session.user) {
+        session.user.role = "user";
       }
-      return false;
+      return session;
+    },
+    async signIn({ account, profile }) {
+      if (account?.provider === "google" && profile?.email) {
+        return profile.email.endsWith("@next-u.fr");
+      }
+      return true;
     },
   },
-};
-
-export const getAuthSession = async () => {
-  const session = await getServerSession(authOption);
-  return session;
-};
+});

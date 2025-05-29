@@ -23,7 +23,7 @@ export const Footer = async () => {
         <CarouselContent className="flex justify-around">
           <CarouselItem className="flex-1">
             <Link
-              href="/"
+              href="/user/"
               className={clsx(
                 buttonVariants({ variant: "outline" }),
                 "w-full flex justify-center"
@@ -34,7 +34,7 @@ export const Footer = async () => {
           </CarouselItem>
           <CarouselItem className="flex-1">
             <Link
-              href="/dates"
+              href="/user/dates"
               className={clsx(
                 buttonVariants({ variant: "outline" }),
                 "w-full flex justify-center"
@@ -45,7 +45,7 @@ export const Footer = async () => {
           </CarouselItem>
           <CarouselItem className="flex-1">
             <Link
-              href="/credits"
+              href="/user/credits"
               className={clsx(
                 buttonVariants({ variant: "outline" }),
                 "w-full flex justify-center"
@@ -56,7 +56,7 @@ export const Footer = async () => {
           </CarouselItem>
           <CarouselItem className="flex-1">
             <Link
-              href="/newspaper"
+              href="/user/newspaper"
               className={clsx(
                 buttonVariants({ variant: "outline" }),
                 "w-full flex justify-center"
@@ -67,7 +67,7 @@ export const Footer = async () => {
           </CarouselItem>
           <CarouselItem className="flex-1">
             <Link
-              href="/go-back-to-your-high-school"
+              href="/user/go-back-to-your-high-school"
               className={clsx(
                 buttonVariants({ variant: "outline" }),
                 "w-full flex justify-center"
@@ -78,7 +78,7 @@ export const Footer = async () => {
           </CarouselItem>
           <CarouselItem className="flex-1">
             <Link
-              href="/forms"
+              href="/user/forms"
               className={clsx(
                 buttonVariants({ variant: "outline" }),
                 "w-full flex justify-center"
@@ -89,7 +89,7 @@ export const Footer = async () => {
           </CarouselItem>
           <CarouselItem className="flex-1">
             <Link
-              href="/profile"
+              href="/user/profile"
               className={clsx(
                 buttonVariants({ variant: "outline" }),
                 "w-full flex justify-center"
