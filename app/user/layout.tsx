@@ -1,7 +1,7 @@
 import { Footer } from "@/src/features/layout/Footer";
 import { Header } from "@/src/features/layout/Header";
 
-export default function DashboardShell({
+export default function UserLayout({
   children,
 }: {
   children: React.ReactNode;

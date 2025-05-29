@@ -52,6 +52,7 @@ model VerificationToken {
   @@map("verification_tokens")
 }
 
+
 // Modèle pour la table User
 model User {
   id            String    @id @default(cuid())
@@ -59,7 +60,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  role          String?
+  role          String    
   credit        Int?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -67,6 +68,11 @@ model User {
   accounts      Account[]
   sessions      Session[]
   userEvents    UserEvent[]
+}
+
+model WhitelistEmail {
+  id    Int    @id @default(autoincrement())
+  email String @unique
 }
 
 // Modèle pour la table Event
