@@ -57,12 +57,12 @@ export default async function ProfilePage() {
       <div className="mt-6 border-t pt-4">
         <h3 className="text-lg font-semibold mb-2">Mes contacts</h3>
         <div className="flex gap-2">
-          <div className="flex items-center gap-2 bg-background p-2 rounded-full shadow-sm px-4 border">
+          <div className="flex items-center gap-2 bg-background p-2 rounded-full shadow-xs px-4 border">
             <span className="text-primary font-medium">
               {fakeProfile.contact.username}
             </span>
           </div>
-          <div className="flex items-center gap-2 bg-background p-2 rounded-full shadow-sm px-4 border">
+          <div className="flex items-center gap-2 bg-background p-2 rounded-full shadow-xs px-4 border">
             <span className="text-primary font-medium">
               {fakeProfile.contact.phone}
             </span>

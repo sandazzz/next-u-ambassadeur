@@ -25,7 +25,7 @@ export const Footer = async () => {
             <Link
               href="/user/"
               className={clsx(
-                buttonVariants({ variant: "outline" }),
+                buttonVariants({ variant: "outline-solid" }),
                 "w-full flex justify-center"
               )}
             >
@@ -36,7 +36,7 @@ export const Footer = async () => {
             <Link
               href="/user/dates"
               className={clsx(
-                buttonVariants({ variant: "outline" }),
+                buttonVariants({ variant: "outline-solid" }),
                 "w-full flex justify-center"
               )}
             >
@@ -47,7 +47,7 @@ export const Footer = async () => {
             <Link
               href="/user/credits"
               className={clsx(
-                buttonVariants({ variant: "outline" }),
+                buttonVariants({ variant: "outline-solid" }),
                 "w-full flex justify-center"
               )}
             >
@@ -58,7 +58,7 @@ export const Footer = async () => {
             <Link
               href="/user/newspaper"
               className={clsx(
-                buttonVariants({ variant: "outline" }),
+                buttonVariants({ variant: "outline-solid" }),
                 "w-full flex justify-center"
               )}
             >
@@ -69,7 +69,7 @@ export const Footer = async () => {
             <Link
               href="/user/go-back-to-your-high-school"
               className={clsx(
-                buttonVariants({ variant: "outline" }),
+                buttonVariants({ variant: "outline-solid" }),
                 "w-full flex justify-center"
               )}
             >
@@ -80,7 +80,7 @@ export const Footer = async () => {
             <Link
               href="/user/forms"
               className={clsx(
-                buttonVariants({ variant: "outline" }),
+                buttonVariants({ variant: "outline-solid" }),
                 "w-full flex justify-center"
               )}
             >
@@ -91,7 +91,7 @@ export const Footer = async () => {
             <Link
               href="/user/profile"
               className={clsx(
-                buttonVariants({ variant: "outline" }),
+                buttonVariants({ variant: "outline-solid" }),
                 "w-full flex justify-center"
               )}
             >
