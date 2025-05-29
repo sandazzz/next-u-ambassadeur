@@ -7,12 +7,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { User2 } from "lucide-react";
 import Link from "next/link";
-import { getAuthSession } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { DropdownMenuItemLogOut } from "@/src/features/layout/auth/LogoutButton";
 import React from "react";
 
 export const UserProfile = async () => {
-  const session = await getAuthSession();
+  const session = await auth();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
