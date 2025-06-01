@@ -23,7 +23,7 @@ export default function LoginButton() {
   return (
     <Button
       onClick={() => signIn("google")}
-      className="w-full flex items-center justify-center gap-3 py-5 text-sm font-medium transition-all hover:bg-slate-50 hover:border-slate-300 hover:shadow-md"
+      className="w-full flex items-center justify-center gap-3 py-5 text-sm font-medium transition-all hover:bg-slate-50 hover:border-slate-300 hover:shadow-md cursor-pointer"
       variant="outline"
     >
       <svg
