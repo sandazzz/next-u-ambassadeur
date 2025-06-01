@@ -1,10 +1,11 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -26,7 +27,7 @@ import { User } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateUser } from "@/lib/actions/user";
-import { useTransition } from "react";
+import { useTransition, useEffect } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -45,7 +46,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 interface EditUserDialogProps {
-  user: User;
+  user: User | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -60,13 +61,26 @@ export function EditUserDialog({
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: user.name,
-      email: user.email,
-      role: user.role,
+      name: "",
+      email: "",
+      role: "ambassador",
     },
   });
 
-  const onSubmit = (values: FormValues) => {
+  // Mettre à jour les valeurs du formulaire quand l'utilisateur change
+  useEffect(() => {
+    if (user) {
+      form.reset({
+        name: user.name || "",
+        email: user.email || "",
+        role: (user.role as "admin" | "ambassador") || "ambassador",
+      });
+    }
+  }, [user, form]);
+
+  const onSubmit = async (values: FormValues) => {
+    if (!user) return;
+
     startTransition(async () => {
       const result = await updateUser({
         id: user.id,
@@ -84,9 +98,11 @@ export function EditUserDialog({
     });
   };
 
+  if (!user) return null;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Modifier l&apos;utilisateur</DialogTitle>
         </DialogHeader>
@@ -151,7 +167,7 @@ export function EditUserDialog({
                 Annuler
               </Button>
               <Button type="submit" disabled={isPending}>
-                Enregistrer
+                {isPending ? "Enregistrement..." : "Enregistrer"}
               </Button>
             </div>
           </form>
