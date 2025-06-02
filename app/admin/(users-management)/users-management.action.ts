@@ -3,6 +3,8 @@ import { z } from "zod";
 import { action } from "@/lib/safe-action";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 const createUserSchema = z.object({
   name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
@@ -33,9 +35,23 @@ const deleteUserSchema = z.object({
   id: z.string(),
 });
 
+async function checkAdminAccess() {
+  const session = await auth();
+
+  if (!session?.user) {
+    redirect("/api/auth/signin");
+  }
+
+  if (session.user.role !== "admin") {
+    throw new Error("Accès non autorisé");
+  }
+}
+
 export const createUser = action
   .schema(createUserSchema)
   .action(async ({ parsedInput }) => {
+    await checkAdminAccess();
+
     try {
       // Vérifier si l'email existe déjà
       const existingUser = await prisma.user.findUnique({
@@ -77,6 +93,8 @@ export const createUser = action
 export const updateUser = action
   .schema(updateUserSchema)
   .action(async ({ parsedInput }) => {
+    await checkAdminAccess();
+
     try {
       // Vérifier si l'utilisateur existe
       const existingUser = await prisma.user.findUnique({
@@ -122,6 +140,8 @@ export const updateUser = action
 export const deleteUser = action
   .schema(deleteUserSchema)
   .action(async ({ parsedInput }) => {
+    await checkAdminAccess();
+
     try {
       // Vérifier si l'utilisateur existe
       const existingUser = await prisma.user.findUnique({

@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Plus } from "lucide-react";
 import { User } from "@prisma/client";
-import { createUser } from "@/lib/actions/user";
+import { createUser } from "@/app/admin/(users-management)/users-management.action";
 import { toast } from "sonner";
 
 type CreateUserResult = {
@@ -30,7 +30,7 @@ type CreateUserResult = {
   data?: User;
 };
 
-export function AddUserModal() {
+export function CreateUserButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -80,7 +80,7 @@ export function AddUserModal() {
         <DialogHeader>
           <DialogTitle>Ajouter un nouvel utilisateur</DialogTitle>
           <DialogDescription>
-            Créez un nouveau compte utilisateur pour la plateforme Next-u
+            Créez un nouveau compte utilisateur pour la plateforme Next-U
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -105,7 +105,7 @@ export function AddUserModal() {
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
-              placeholder="utilisateur@next-u.fr"
+              placeholder="prénom.nom@next-u.fr"
               disabled={isLoading}
             />
           </div>

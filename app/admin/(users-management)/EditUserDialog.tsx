@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -26,7 +27,7 @@ import {
 import { User } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { updateUser } from "@/lib/actions/user";
+import { updateUser } from "@/app/admin/(users-management)/users-management.action";
 import { useTransition, useEffect } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -105,6 +106,10 @@ export function EditUserDialog({
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Modifier l&apos;utilisateur</DialogTitle>
+          <DialogDescription>
+            Modifiez les informations de l&apos;utilisateur ci-dessous. Cliquez
+            sur Enregistrer lorsque vous avez terminé.
+          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
