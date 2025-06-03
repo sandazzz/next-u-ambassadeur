@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Card,
   CardContent,
@@ -8,10 +6,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { SessionProvider } from "next-auth/react";
-import LoginButton from "./LoginButton";
 
-export default function LoginPage() {
+import LoginButton from "./LoginButton";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+
+export default async function LoginPage() {
+  const session = await auth();
+
+  if (session?.user.role === "admin") {
+    redirect("/admin");
+  } else if (session?.user.role === "ambassador") {
+    redirect("/ambassadeur");
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 to-slate-100">
       {/* Subtle decorative elements */}
@@ -32,9 +40,7 @@ export default function LoginPage() {
           </CardHeader>
           <CardContent className="px-8">
             <div className="w-full space-y-6">
-              <SessionProvider>
-                <LoginButton />
-              </SessionProvider>
+              <LoginButton />
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t border-slate-200"></span>
