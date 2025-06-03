@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Next-U Ambassador",
-  description: "L'application pour les ambassadeurs next-u",
+  description: "L'application pour les ambassadeurs Next-U",
 };
 
 export default function RootLayout({
