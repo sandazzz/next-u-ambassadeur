@@ -9,6 +9,10 @@ declare module "next-auth" {
       role: string;
     } & DefaultSession["user"];
   }
+
+  interface User {
+    role: string;
+  }
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -29,17 +33,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    session({ session }) {
-      if (session.user) {
-        session.user.role = "user";
+    session({ session, user }) {
+      if (session.user && user) {
+        session.user.role = user.role;
       }
       return session;
     },
     async signIn({ account, profile }) {
-      if (account?.provider === "google" && profile?.email) {
-        return profile.email.endsWith("@next-u.fr");
+      if (!profile?.email) {
+        return false;
       }
-      return true;
+
+      if (account?.provider === "google") {
+        const allowed = await prisma.whitelistEmail.findUnique({
+          where: { email: profile.email },
+        });
+        return !!allowed;
+      }
+      return false;
     },
   },
 });

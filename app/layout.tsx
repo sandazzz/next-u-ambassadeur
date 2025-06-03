@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/src/theme/ThemeProvider";
 import { Inter } from "next/font/google";
 import clsx from "clsx";
+import { Toaster } from "@/components/providers/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );

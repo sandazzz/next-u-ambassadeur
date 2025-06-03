@@ -1,9 +1,12 @@
 import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const session = await auth();
   console.log(session);
-
+  if (!session) {
+    redirect("/");
+  }
   if (session) {
     return (
       <div className="divide-y divide-muted w-full flex flex-col justify-center items-center">
