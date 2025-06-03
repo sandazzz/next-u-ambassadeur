@@ -7,9 +7,10 @@ import { redirect } from "next/navigation";
 export default async function AdminDashboard() {
   const session = await auth();
 
-  if (!session) {
+  if (!session || session.user.role !== "admin") {
     redirect("/");
   }
+
   const users = await prisma.user.findMany();
 
   return (
