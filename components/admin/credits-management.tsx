@@ -148,7 +148,7 @@ export function CreditsManagement() {
       const variants = {
         1: "default",
         2: "secondary",
-        3: "outline-solid",
+        3: "outline",
       } as const;
       return (
         <Badge variant={variants[position as keyof typeof variants]}>
