@@ -26,20 +26,20 @@ export default async function GoBackToYourHighSchool() {
             ✅ Prendre les coordonnées des étudiants (coupons)
           </li>
           <li className="flex items-center">
-            ✅ Faire un retour à l'administration
+            ✅ Faire un retour à l&apos;administration
           </li>
         </ul>
 
         {/* Explication des avantages */}
         <p className="text-primary">
-          Cette démarche doit être **autonome**, mais un membre de l'équipe peut
-          t'accompagner si besoin. **Bonne nouvelle** : Une fois cette action
-          réalisée, tu gagneras **1 crédit** ! 🎉
+          Cette démarche doit être **autonome**, mais un membre de l&apos;équipe
+          peut t&apos;accompagner si besoin. **Bonne nouvelle** : Une fois cette
+          action réalisée, tu gagneras **1 crédit** ! 🎉
         </p>
 
         <p className="text-primary">
           Pour les établissements nécessitant un long déplacement, les **frais
-          de transport** sont pris en charge par l’école. 🚌
+          de transport** sont pris en charge par l&apos;école. 🚌
         </p>
 
         {/* Call-to-action */}

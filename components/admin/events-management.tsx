@@ -155,7 +155,7 @@ export function EventsManagement({
     const variants = {
       planned: "default",
       ongoing: "secondary",
-      completed: "outline-solid",
+      completed: "outline",
       cancelled: "destructive",
     } as const;
 
