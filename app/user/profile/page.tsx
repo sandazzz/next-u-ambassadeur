@@ -1,42 +1,47 @@
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const fakeProfile = {
-  name: "Sanda Rakotovelo",
-  role: "Ambassadeur Webtech",
-  level: "N3",
-  description:
-    "Ma description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.",
-  favoriteMoment: "Voyage à Tokyo",
-  contact: {
-    username: "@sanda.v15",
-    phone: "06 66 25 85 94",
-  },
-};
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import prisma from "@/lib/prisma";
 
 export default async function ProfilePage() {
+  const session = await auth();
+
+  if (!session || session.user.role !== "ambassador") {
+    redirect("/");
+  }
+  const profile = await prisma.user.findUnique({
+    where: {
+      id: session.user.id,
+    },
+  });
+
+  console.log(profile);
   return (
     <div className="max-w-lg w-full p-6">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <div className="w-20 h-20 bg-gray-200 rounded-full flex justify-center items-center">
-          <Image
-            src="/profile-placeholder.png"
-            alt="Profile Picture"
-            width={80}
-            height={80}
-            className="rounded-full object-cover"
+        <Avatar className="w-20 h-20">
+          <AvatarImage
+            src={profile?.image ?? undefined}
+            alt={profile?.name ?? "Avatar"}
           />
-        </div>
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
         <div>
-          <h2 className="text-lg font-semibold italic">{fakeProfile.name}</h2>
-          <p className="text-gray-500 italic">{fakeProfile.role}</p>
-          <p className="font-bold">{fakeProfile.level}</p>
+          <h2 className="text-lg font-semibold italic">{profile?.name}</h2>
+          <p className="text-gray-500 italic">Ambassadeur {profile?.school}</p>
+          <p className="font-bold">
+            {profile?.promoYear && profile?.promoYear < 4
+              ? "N" + profile?.promoYear
+              : "M" + profile?.promoYear}
+          </p>
         </div>
       </div>
 
       {/* Description */}
-      <p className="text-gray-600 mt-4 text-sm">{fakeProfile.description}</p>
+      <p className="text-gray-600 mt-4 text-sm">{profile?.description}</p>
 
       {/* Button */}
       <div className="mt-4">
@@ -48,9 +53,7 @@ export default async function ProfilePage() {
       {/* Favorite Moment */}
       <div className="mt-6 border-t pt-4">
         <h3 className="text-lg font-semibold">Mon moment préféré</h3>
-        <p className="mt-2 text-gray-600 text-sm">
-          {fakeProfile.favoriteMoment}
-        </p>
+        <p className="mt-2 text-gray-600 text-sm">{profile?.favoriteMoment}</p>
       </div>
 
       {/* Contact */}
@@ -58,14 +61,12 @@ export default async function ProfilePage() {
         <h3 className="text-lg font-semibold mb-2">Mes contacts</h3>
         <div className="flex gap-2">
           <div className="flex items-center gap-2 bg-background p-2 rounded-full shadow-xs px-4 border">
-            <span className="text-primary font-medium">
-              {fakeProfile.contact.username}
+            <span className="text-primary font-medium italic">
+              @{profile?.instagram}
             </span>
           </div>
           <div className="flex items-center gap-2 bg-background p-2 rounded-full shadow-xs px-4 border">
-            <span className="text-primary font-medium">
-              {fakeProfile.contact.phone}
-            </span>
+            <span className="text-primary font-medium">{profile?.phone}</span>
           </div>
         </div>
       </div>
