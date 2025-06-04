@@ -17,7 +17,7 @@ export default async function LoginPage() {
   if (session?.user.role === "admin") {
     redirect("/admin");
   } else if (session?.user.role === "ambassador") {
-    redirect("/ambassadeur");
+    redirect("/user/profile");
   }
 
   return (
