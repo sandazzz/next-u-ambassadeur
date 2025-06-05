@@ -32,7 +32,7 @@ export default async function LoginPage() {
           <div className="h-1.5 w-full bg-gradient-to-r from-violet-500 to-fuchsia-500"></div>
           <CardHeader className="text-center pt-8 pb-4">
             <CardTitle className="text-2xl font-semibold text-slate-800">
-              Welcome
+              Welcome to Next-U
             </CardTitle>
             <CardDescription className="text-slate-500 mt-1.5">
               Sign in to continue
@@ -77,7 +77,7 @@ export default async function LoginPage() {
       {/* Refined footer */}
       <footer className="p-6 text-center">
         <p className="text-xs text-slate-500">
-          © 2025 AppName. All rights reserved.
+          © 2025 Next-U. All rights reserved.
         </p>
       </footer>
     </div>
