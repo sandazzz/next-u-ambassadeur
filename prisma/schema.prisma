@@ -67,7 +67,7 @@ model User {
 
   accounts      Account[]
   sessions      Session[]
-  userEvents    UserEvent[]
+  userSlots     UserSlot[]
 }
 
 model WhitelistEmail {
@@ -86,18 +86,28 @@ model Event {
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
 
-  userEvents UserEvent[]
+  slots       EventSlot[]
+
 }
 
-// Modèle pour la table UserEvent (table de relation many-to-many)
-model UserEvent {
-  userId    String
+model EventSlot {
+  id        String       @id @default(cuid())
   eventId   String
-  status    String   @default("registered") // ex: registered, cancelled, waiting_list
+  startTime DateTime
+  endTime   DateTime
+
+  event     Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userSlots UserSlot[]
+}
+
+model UserSlot {
+  userId    String
+  slotId    String
+  status    String   @default("waiting_list")
   createdAt DateTime @default(now())
 
-  user      User   @relation(fields: [userId], references: [id])
-  event     Event  @relation(fields: [eventId], references: [id])
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slot      EventSlot  @relation(fields: [slotId], references: [id], onDelete: Cascade)
 
-  @@id([userId, eventId])
+  @@id([userId, slotId])
 }
