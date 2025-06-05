@@ -6,7 +6,6 @@ import {
   ChartNoAxesColumn,
   Calendar,
   Newspaper,
-  School,
   ClipboardList,
 } from "lucide-react";
 import Link from "next/link";
@@ -63,17 +62,6 @@ export const Footer = async () => {
               )}
             >
               <Newspaper size={16} />
-            </Link>
-          </CarouselItem>
-          <CarouselItem className="flex-1">
-            <Link
-              href="/user/go-back-to-your-high-school"
-              className={clsx(
-                buttonVariants({ variant: "outline" }),
-                "w-full flex justify-center"
-              )}
-            >
-              <School size={16} />
             </Link>
           </CarouselItem>
           <CarouselItem className="flex-1">
