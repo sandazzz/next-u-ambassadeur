@@ -27,7 +27,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           name: profile.name,
           email: profile.email,
           image: profile.picture,
-          role: profile.role ?? "user",
+          role: profile.role ?? "ambassador",
         };
       },
     }),
@@ -37,6 +37,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (session.user && user) {
         session.user.role = user.role;
       }
+      session.user.image = user.image;
       return session;
     },
     async signIn({ account, profile }) {
@@ -48,6 +49,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const allowed = await prisma.whitelistEmail.findUnique({
           where: { email: profile.email },
         });
+
+        if (allowed) {
+          // Met à jour l'image dans la base à chaque connexion
+          await prisma.user.update({
+            where: { email: profile.email },
+            data: {
+              image: profile.picture,
+            },
+          });
+        }
         return !!allowed;
       }
       return false;
