@@ -1,14 +1,15 @@
 "use server";
 
-import { z } from "zod";
 import { action } from "@/lib/safe-action";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { redirect } from "next/navigation";
+import { z } from "zod";
 
 const registerSchema = z.object({
-  eventId: z.string(),
-  slotId: z.string().min(1, "Veuillez sélectionner une plage horaire"),
+  eventId: z.string().nonempty("L'identifiant de l'événement est requis"),
+  slotIds: z
+    .array(z.string())
+    .min(1, "Au moins une plage horaire doit être sélectionnée"),
 });
 
 export const registerToEvent = action
@@ -19,14 +20,13 @@ export const registerToEvent = action
     if (!session?.user?.id) {
       return { error: { serverError: "Non autorisé" } };
     }
+    const user = session.user.id;
 
     try {
       const event = await prisma.event.findUnique({
         where: { id: parsedInput.eventId },
         include: {
-          slots: {
-            where: { id: parsedInput.slotId },
-          },
+          slots: true,
         },
       });
 
@@ -42,15 +42,7 @@ export const registerToEvent = action
         };
       }
 
-      if (event.slots.length === 0) {
-        return {
-          error: {
-            serverError: "La plage horaire sélectionnée n'est pas disponible",
-          },
-        };
-      }
-
-      // Vérifier si l'utilisateur est déjà inscrit à une plage horaire de cet événement
+      // Vérifie si l'utilisateur est déjà inscrit à l'événement
       const existingRegistration = await prisma.userSlot.findFirst({
         where: {
           userId: session.user.id,
@@ -68,17 +60,33 @@ export const registerToEvent = action
           },
         };
       }
+      // Vérifie que les slotIds existent bien dans les slots de l'événement
+      const validSlotIds = event.slots.map((slot) => slot.id);
+      const invalidSlot = parsedInput.slotIds.find(
+        (id) => !validSlotIds.includes(id)
+      );
 
-      // Créer l'inscription à la plage horaire
-      const userSlot = await prisma.userSlot.create({
-        data: {
-          userId: session.user.id,
-          slotId: parsedInput.slotId,
-          status: "waiting_list",
-        },
-      });
-      redirect("/user/forms");
-      return { data: userSlot };
+      if (invalidSlot) {
+        return {
+          error: {
+            serverError:
+              "Une des plages sélectionnées n'appartient pas à l'événement",
+          },
+        };
+      }
+
+      const createdSlots = await Promise.all(
+        parsedInput.slotIds.map((slotId) =>
+          prisma.userSlot.create({
+            data: {
+              userId: user,
+              slotId,
+              status: "waiting_list",
+            },
+          })
+        )
+      );
+      return { data: createdSlots };
     } catch (error) {
       console.error("Erreur lors de l'inscription:", error);
       return {

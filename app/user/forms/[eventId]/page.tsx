@@ -1,26 +1,19 @@
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { RegisterForm } from "./register-form";
-import { Event, EventSlot, UserSlot } from "@prisma/client";
-
-type EventWithSlots = Event & {
-  slots: (EventSlot & {
-    userSlots: UserSlot[];
-  })[];
-};
 
 export default async function EventPage({
   params,
 }: {
-  params: { eventId: string };
+  params: Promise<{ eventId: string }>;
 }) {
   const { eventId } = await params;
 
   const session = await auth();
 
   if (!session || session.user.role !== "ambassador") {
-    notFound();
+    redirect("/");
   }
 
   const event = await prisma.event.findUnique({
@@ -39,14 +32,14 @@ export default async function EventPage({
   }
 
   return (
-    <div className="container max-w-2xl py-8">
-      <div className="space-y-6">
+    <div className="w-full p-8 flex justify-center">
+      <div className="space-y-6 w-full">
         <div>
           <h1 className="text-3xl font-bold">{event.title}</h1>
           <p className="text-muted-foreground mt-2">{event.description}</p>
         </div>
 
-        <RegisterForm event={event as EventWithSlots} />
+        <RegisterForm event={event} />
       </div>
     </div>
   );

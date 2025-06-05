@@ -14,10 +14,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { registerToEvent } from "../actions";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Event, EventSlot, UserSlot } from "@prisma/client";
+import { registerToEvent } from "./register-event.actions";
+import { Loader } from "@/components/ui/loader";
 
 const formSchema = z.object({
   slotIds: z
@@ -25,13 +26,15 @@ const formSchema = z.object({
     .min(1, "Veuillez sélectionner au moins une plage horaire"),
 });
 
-type EventWithSlots = Event & {
-  slots: (EventSlot & {
-    userSlots: UserSlot[];
-  })[];
-};
-
-export function RegisterForm({ event }: { event: EventWithSlots }) {
+export function RegisterForm({
+  event,
+}: {
+  event: Event & {
+    slots: (EventSlot & {
+      userSlots: UserSlot[];
+    })[];
+  };
+}) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,24 +59,26 @@ export function RegisterForm({ event }: { event: EventWithSlots }) {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    // Envoyer une inscription pour chaque plage horaire sélectionnée
-    Promise.all(
-      values.slotIds.map((slotId) => execute({ slotId, eventId: event.id }))
-    );
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    await execute({
+      eventId: event.id,
+      slotIds: values.slotIds,
+    });
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
           name="slotIds"
           render={() => (
-            <FormItem className="space-y-3">
-              <FormLabel>Plages horaires</FormLabel>
+            <FormItem className="space-y-4">
+              <FormLabel className="text-lg font-semibold">
+                Plages horaires
+              </FormLabel>
               <FormControl>
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-6">
                   {event.slots.map((slot) => (
                     <FormField
                       key={slot.id}
@@ -134,9 +139,11 @@ export function RegisterForm({ event }: { event: EventWithSlots }) {
           className="w-full"
           disabled={status === "executing"}
         >
-          {status === "executing"
-            ? "Envoi en cours..."
-            : "Envoyer la demande d'inscription"}
+          {status === "executing" ? (
+            <Loader />
+          ) : (
+            "Envoyer la demande d'inscription"
+          )}
         </Button>
       </form>
     </Form>

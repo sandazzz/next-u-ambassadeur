@@ -87,7 +87,7 @@ const formatTime = (date: Date) => {
 export default async function EventDetailsPage({
   params,
 }: {
-  params: { eventId: string };
+  params: Promise<{ eventId: string }>;
 }) {
   const { eventId } = await params;
   const session = await auth();
