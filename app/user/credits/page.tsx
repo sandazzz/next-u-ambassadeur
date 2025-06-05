@@ -8,25 +8,29 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-
-// Données fictives
-const ambassadors = [
-  { name: "Alex Dupont", credits: 2 },
-  { name: "Emma Martin", credits: 5 },
-  { name: "Lucas Bernard", credits: 5 },
-  { name: "Sophie Morel", credits: 3 },
-  { name: "Maxime Lefevre", credits: 1 },
-  { name: "Julie Durant", credits: 3 },
-  { name: "Nicolas Charpentier", credits: 2 },
-  { name: "Camille Robert", credits: 1 },
-  { name: "Antoine Dubois", credits: 1 },
-  { name: "Léa Fontaine", credits: 1 },
-];
-
-// Tri des ambassadeurs par nombre de crédits (ordre décroissant)
-const sortedAmbassadors = ambassadors.sort((a, b) => b.credits - a.credits);
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import prisma from "@/lib/prisma";
 
 export default async function LeaderboardPage() {
+  const session = await auth();
+  if (!session || session.user.role !== "admin") {
+    redirect("/");
+  }
+  const ambassadors = await prisma.user.findMany({
+    where: {
+      role: "ambassador",
+    },
+    select: {
+      name: true,
+      credit: true,
+    },
+  });
+
+  const sortedAmbassadors = ambassadors.sort(
+    (a, b) => (b.credit ?? 0) - (a.credit ?? 0)
+  );
+
   return (
     <div className="p-6 max-w-lg mx-auto space-y-6">
       {/* Titre principal */}
@@ -49,7 +53,7 @@ export default async function LeaderboardPage() {
                 {index === 0 && "🥇"} {index === 1 && "🥈"}{" "}
                 {index === 2 && "🥉"} {ambassador.name}
               </span>
-              <Badge className="px-2 py-1">{ambassador.credits} crédits</Badge>
+              <Badge className="px-2 py-1">{ambassador.credit} crédits</Badge>
             </div>
           ))}
         </CardContent>
@@ -75,7 +79,7 @@ export default async function LeaderboardPage() {
                   <TableCell className="font-medium">#{index + 1}</TableCell>
                   <TableCell>{ambassador.name}</TableCell>
                   <TableCell className="text-right">
-                    {ambassador.credits}
+                    {ambassador.credit}
                   </TableCell>
                 </TableRow>
               ))}
