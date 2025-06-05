@@ -14,7 +14,7 @@ import prisma from "@/lib/prisma";
 
 export default async function LeaderboardPage() {
   const session = await auth();
-  if (!session) {
+  if (!session || session.user.role !== "admin") {
     redirect("/");
   }
   const ambassadors = await prisma.user.findMany({

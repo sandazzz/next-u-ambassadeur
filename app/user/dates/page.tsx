@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 export default async function EvenementsPage() {
   const session = await auth();
-  if (!session) {
+  if (!session || session.user.role !== "ambassador") {
     redirect("/");
   }
   const event = await prisma.event.findMany({
