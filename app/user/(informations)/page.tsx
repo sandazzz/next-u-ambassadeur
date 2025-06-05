@@ -21,7 +21,7 @@ import { redirect } from "next/navigation";
 export default async function AmbassadorLanding() {
   const session = await auth();
 
-  if (!session) {
+  if (!session || session.user.role !== "ambassador") {
     redirect("/");
   }
 
