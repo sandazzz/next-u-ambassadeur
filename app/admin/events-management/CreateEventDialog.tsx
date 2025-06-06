@@ -16,9 +16,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { createEvent } from "./events-management.action";
 import { toast } from "sonner";
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import CircularLoader from "@/components/ui/circular-loader";
+
+interface TimeSlot {
+  startTime: string;
+  endTime: string;
+  location: string;
+}
 
 export function CreateEventDialog() {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,18 +36,24 @@ export function CreateEventDialog() {
     time: "",
     location: "",
   });
+  const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
+
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      description: "",
+      date: "",
+      time: "",
+      location: "",
+    });
+    setTimeSlots([]);
+    setIsLoading(false);
+  };
 
   const { executeAsync } = useAction(createEvent, {
     onSuccess: () => {
-      setFormData({
-        title: "",
-        description: "",
-        date: "",
-        time: "",
-        location: "",
-      });
+      resetForm();
       setIsOpen(false);
-      setIsLoading(false);
       toast.success("Succès", {
         description: "L'événement a été créé avec succès",
       });
@@ -57,18 +69,49 @@ export function CreateEventDialog() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    await executeAsync(formData);
+    await executeAsync({
+      ...formData,
+      timeSlots,
+    });
+  };
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      resetForm();
+    }
+    setIsOpen(open);
+  };
+
+  const addTimeSlot = () => {
+    setTimeSlots([
+      ...timeSlots,
+      { startTime: "", endTime: "", location: formData.location },
+    ]);
+  };
+
+  const removeTimeSlot = (index: number) => {
+    setTimeSlots(timeSlots.filter((_, i) => i !== index));
+  };
+
+  const updateTimeSlot = (
+    index: number,
+    field: keyof TimeSlot,
+    value: string
+  ) => {
+    const newTimeSlots = [...timeSlots];
+    newTimeSlots[index] = { ...newTimeSlots[index], [field]: value };
+    setTimeSlots(newTimeSlots);
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button className="cursor-pointer">
           <Plus className="h-4 w-4 mr-2" />
           Créer un événement
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Créer un événement</DialogTitle>
           <DialogDescription>
@@ -114,19 +157,7 @@ export function CreateEventDialog() {
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="time">Heure</Label>
-            <Input
-              id="time"
-              type="time"
-              value={formData.time}
-              onChange={(e) =>
-                setFormData({ ...formData, time: e.target.value })
-              }
-              disabled={isLoading}
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="location">Lieu</Label>
+            <Label htmlFor="location">Lieu principal</Label>
             <Input
               id="location"
               value={formData.location}
@@ -137,11 +168,70 @@ export function CreateEventDialog() {
               disabled={isLoading}
             />
           </div>
+
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <Label>Plages horaires</Label>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={addTimeSlot}
+                disabled={isLoading}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Ajouter une plage
+              </Button>
+            </div>
+
+            {timeSlots.map((slot, index) => (
+              <div key={index} className="grid gap-4 p-4 border rounded-lg">
+                <div className="flex justify-between items-center">
+                  <h4 className="font-medium">Plage {index + 1}</h4>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeTimeSlot(index)}
+                    disabled={isLoading}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor={`startTime-${index}`}>Heure de début</Label>
+                    <Input
+                      id={`startTime-${index}`}
+                      type="time"
+                      value={slot.startTime}
+                      onChange={(e) =>
+                        updateTimeSlot(index, "startTime", e.target.value)
+                      }
+                      disabled={isLoading}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor={`endTime-${index}`}>Heure de fin</Label>
+                    <Input
+                      id={`endTime-${index}`}
+                      type="time"
+                      value={slot.endTime}
+                      onChange={(e) =>
+                        updateTimeSlot(index, "endTime", e.target.value)
+                      }
+                      disabled={isLoading}
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <DialogFooter>
+        <DialogFooter className="sticky bottom-0 bg-background pt-4 border-t">
           <Button
             variant="outline"
-            onClick={() => setIsOpen(false)}
+            onClick={() => handleOpenChange(false)}
             disabled={isLoading}
           >
             Annuler
