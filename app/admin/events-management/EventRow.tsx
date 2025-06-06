@@ -3,6 +3,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin } from "lucide-react";
 import { EventActions } from "./EventActions";
+import Link from "next/link";
 
 type EventStatus = "open" | "closed" | "completed";
 
@@ -26,12 +27,17 @@ export function EventRow({ event }: { event: Event }) {
   return (
     <TableRow>
       <TableCell>
-        <div>
-          <div className="font-medium">{event.title}</div>
-          <div className="text-sm text-muted-foreground">
-            {event.description}
+        <Link
+          href={`/admin/events-management/${event.id}`}
+          className="hover:underline"
+        >
+          <div>
+            <div className="font-medium">{event.title}</div>
+            <div className="text-sm text-muted-foreground">
+              {event.description}
+            </div>
           </div>
-        </div>
+        </Link>
       </TableCell>
       <TableCell>
         <div className="flex items-center">

@@ -7,13 +7,22 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
+const timeSlotSchema = z.object({
+  startTime: z.string().min(1, "L'heure de début est requise"),
+  endTime: z.string().min(1, "L'heure de fin est requise"),
+});
+
 const createEventSchema = z.object({
   title: z.string().min(1, "Le titre est requis"),
   description: z.string().min(1, "La description est requise"),
   date: z.string().min(1, "La date est requise"),
-  time: z.string().min(1, "L'heure est requise"),
   location: z.string().min(1, "Le lieu est requis"),
+  timeSlots: z
+    .array(timeSlotSchema)
+    .min(1, "Au moins une plage horaire est requise"),
 });
+
+type CreateEventInput = z.infer<typeof createEventSchema>;
 
 const updateEventSchema = createEventSchema.extend({
   id: z.string(),
@@ -42,7 +51,7 @@ async function checkAdminAccess() {
 
 export const createEvent = action
   .schema(createEventSchema)
-  .action(async ({ parsedInput }) => {
+  .action(async ({ parsedInput }: { parsedInput: CreateEventInput }) => {
     await checkAdminAccess();
 
     try {
@@ -50,9 +59,15 @@ export const createEvent = action
         data: {
           title: parsedInput.title,
           description: parsedInput.description,
-          date: new Date(`${parsedInput.date}T${parsedInput.time}`),
+          date: new Date(parsedInput.date),
           location: parsedInput.location,
           status: "closed",
+          slots: {
+            create: parsedInput.timeSlots.map((slot) => ({
+              startTime: new Date(`${parsedInput.date}T${slot.startTime}`),
+              endTime: new Date(`${parsedInput.date}T${slot.endTime}`),
+            })),
+          },
         },
       });
 
@@ -74,7 +89,7 @@ export const updateEvent = action
         data: {
           title: parsedInput.title,
           description: parsedInput.description,
-          date: new Date(`${parsedInput.date}T${parsedInput.time}`),
+          date: new Date(parsedInput.date),
           location: parsedInput.location,
         },
       });

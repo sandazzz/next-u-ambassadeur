@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 export function DashboardHeader() {
   return (
@@ -11,6 +12,7 @@ export function DashboardHeader() {
       <SidebarTrigger className="-ml-1" />
       <div className="flex-1" />
       <div className="flex items-center gap-4">
+        <ThemeToggle />
         <Button
           variant="outline"
           size="sm"
