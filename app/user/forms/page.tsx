@@ -88,6 +88,45 @@ export default async function Form() {
                       <span>{event.location}</span>
                     </div>
                   )}
+                  {userRegistration?.status === "confirmed" && (
+                    <div className="space-y-2">
+                      <div className="text-sm font-medium">
+                        Plages horaires confirmées :
+                      </div>
+                      <div className="space-y-1">
+                        {event.slots
+                          .filter((slot) =>
+                            slot.userSlots.some(
+                              (userSlot) =>
+                                userSlot.userId === session.user.id &&
+                                userSlot.status === "confirmed"
+                            )
+                          )
+                          .map((slot) => (
+                            <div
+                              key={slot.id}
+                              className="text-sm text-muted-foreground bg-muted/50 p-2 rounded-md"
+                            >
+                              {new Date(slot.startTime).toLocaleTimeString(
+                                "fr-FR",
+                                {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                }
+                              )}{" "}
+                              -{" "}
+                              {new Date(slot.endTime).toLocaleTimeString(
+                                "fr-FR",
+                                {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                }
+                              )}
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </CardContent>
               <CardFooter className="p-4">
