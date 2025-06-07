@@ -2,6 +2,7 @@ import NextAuth, { type DefaultSession } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import Google from "next-auth/providers/google";
 import prisma from "./prisma";
+import { redirect } from "next/navigation";
 
 declare module "next-auth" {
   interface Session {
@@ -50,18 +51,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           where: { email: profile.email },
         });
 
-        if (allowed) {
-          // Met à jour l'image dans la base à chaque connexion
-          await prisma.user.update({
-            where: { email: profile.email },
-            data: {
-              image: profile.picture,
-            },
-          });
-        }
+        // if (allowed) {
+        //   // Met à jour l'image dans la base à chaque connexion
+        //   await prisma.user.update({
+        //     where: { email: profile.email },
+        //     data: {
+        //       image: profile.picture,
+        //     },
+        //   });
+        // }
         return !!allowed;
       }
       return false;
     },
   },
 });
+
+export async function checkAdminAccess() {
+  const session = await auth();
+
+  if (!session?.user) {
+    redirect("/api/auth/signin");
+  }
+
+  if (session.user.role !== "admin") {
+    throw new Error("Accès non autorisé");
+  }
+}
