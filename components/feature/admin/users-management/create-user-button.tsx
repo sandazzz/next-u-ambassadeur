@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Plus } from "lucide-react";
 import { User } from "@prisma/client";
-import { createUser } from "@/app/admin/(users-management)/users-management.action";
+import { createUser } from "@/components/feature/admin/users-management/users-management.action";
 import { toast } from "sonner";
 
 type CreateUserResult = {

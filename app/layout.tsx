@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme/theme-provider";
+import { ThemeProvider } from "@/components/feature/theme/theme-provider";
 import { Inter } from "next/font/google";
 import clsx from "clsx";
 import { Toaster } from "@/components/providers/toaster";

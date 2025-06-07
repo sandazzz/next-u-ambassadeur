@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
-import { EditProfileDialog } from "./EditProfileDialog";
+import { EditProfileDialog } from "./edit-profile-dialog";
 
 export default async function ProfilePage() {
   const session = await auth();

@@ -1,5 +1,8 @@
 "use client";
 
+import { useState, useMemo } from "react";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -7,14 +10,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { User } from "@prisma/client";
-import { useState, useMemo } from "react";
-import { Table, TableBody } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { UserRow } from "./user-row";
 
-import { UsersTableHeader } from "./UsersTableHeader";
-import { UserRow } from "./UserRow";
+interface User {
+  id: string;
+  name: string | null;
+  email: string | null;
+  credit: number | null;
+  role: string;
+}
 
 function useFilteredUsers(users: User[], searchQuery: string) {
   return useMemo(() => {
@@ -29,30 +40,37 @@ function useFilteredUsers(users: User[], searchQuery: string) {
   }, [users, searchQuery]);
 }
 
-export function UsersManagement({ users }: { users: User[] }) {
+export function UsersTable({ users }: { users: User[] }) {
   const [searchQuery, setSearchQuery] = useState("");
   const filteredUsers = useFilteredUsers(users, searchQuery);
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Liste des utilisateurs</CardTitle>
+        <CardTitle>Crédits par utilisateur</CardTitle>
         <CardDescription>
-          {users.length} utilisateur(s) au total
+          Gérez les crédits de tous les utilisateurs
         </CardDescription>
         <div className="flex items-center space-x-2">
           <Search className="h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Rechercher un utilisateur..."
-            className="max-w-sm"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            className="max-w-sm"
           />
         </div>
       </CardHeader>
       <CardContent>
         <Table>
-          <UsersTableHeader />
+          <TableHeader>
+            <TableRow>
+              <TableHead>Utilisateur</TableHead>
+              <TableHead>Rôle</TableHead>
+              <TableHead>Crédits</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
           <TableBody>
             {filteredUsers.map((user) => (
               <UserRow key={user.id} user={user} />
