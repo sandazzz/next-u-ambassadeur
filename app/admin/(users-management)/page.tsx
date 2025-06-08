@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { CreateUserButton } from "../../../components/feature/admin/users-management/CreateUserButton";
-import { UsersManagement } from "../../../components/feature/admin/users-management/UsersManagement";
+import { CreateUserButton } from "@/components/feature/admin/users-management/create-user-button";
+import { UsersManagement } from "@/components/feature/admin/users-management/users-management";
 import { redirect } from "next/navigation";
 
 export default async function AdminDashboard() {

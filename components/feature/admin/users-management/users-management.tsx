@@ -13,7 +13,7 @@ import { Table, TableBody } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
-import { UsersTableHeader } from "./UsersTableHeader";
+import { UsersTableHeader } from "./users-table-header";
 import { UserRow } from "./user-row";
 
 function useFilteredUsers(users: User[], searchQuery: string) {
