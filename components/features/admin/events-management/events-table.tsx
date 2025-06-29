@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { EventRow } from "./EventRow";
+import { EventRow } from "./event-row";
 
 export function EventsTable({ events }: { events: Event[] }) {
   return (

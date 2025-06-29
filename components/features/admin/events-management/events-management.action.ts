@@ -2,10 +2,9 @@
 
 import { z } from "zod";
 import { action } from "@/lib/safe-action";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import { checkAdminAccess } from "@/lib/auth";
 
 const timeSlotSchema = z.object({
   startTime: z.string().min(1, "L'heure de début est requise"),
@@ -36,18 +35,6 @@ const updateEventStatusSchema = z.object({
   id: z.string(),
   status: z.enum(["open", "closed", "completed"]),
 });
-
-async function checkAdminAccess() {
-  const session = await auth();
-
-  if (!session?.user) {
-    redirect("/api/auth/signin");
-  }
-
-  if (session.user.role !== "admin") {
-    throw new Error("Accès non autorisé");
-  }
-}
 
 export const createEvent = action
   .schema(createEventSchema)

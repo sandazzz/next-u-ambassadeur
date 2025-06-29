@@ -2,27 +2,14 @@
 
 import { z } from "zod";
 import { action } from "@/lib/safe-action";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import { checkAdminAccess } from "@/lib/auth";
 
 const adjustCreditsSchema = z.object({
   userId: z.string(),
   type: z.enum(["add", "remove"]),
 });
-
-async function checkAdminAccess() {
-  const session = await auth();
-
-  if (!session?.user) {
-    redirect("/api/auth/signin");
-  }
-
-  if (session.user.role !== "admin") {
-    throw new Error("Accès non autorisé");
-  }
-}
 
 export const adjustCredits = action
   .schema(adjustCreditsSchema)

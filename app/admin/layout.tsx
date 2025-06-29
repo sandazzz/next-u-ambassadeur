@@ -1,7 +1,7 @@
 import { SidebarInset } from "@/components/ui/sidebar";
-import { DashboardHeader } from "@/components/admin/dashboard-header";
+import { DashboardHeader } from "@/components/features/admin/layout/dashboard-header";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { AdminSidebar } from "@/components/admin/admin-sidebar";
+import { AdminSidebar } from "@/components/features/admin/layout/admin-sidebar";
 
 export default function DashboardLayout({
   children,

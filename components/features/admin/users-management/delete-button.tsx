@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
-import { DeleteUserDialog } from "./DeleteUserDialog";
+import { DeleteUserDialog } from "./delete-user-dialog";
 
 interface DeleteButtonProps {
   userId: string;

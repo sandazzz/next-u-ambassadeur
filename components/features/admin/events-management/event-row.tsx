@@ -2,7 +2,7 @@ import { Event } from "@prisma/client";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin } from "lucide-react";
-import { EventActions } from "./EventActions";
+import { EventActions } from "./event-actions";
 import Link from "next/link";
 
 type EventStatus = "open" | "closed" | "completed";

@@ -1,9 +1,10 @@
 import { auth } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
-import { CreateEventDialog } from "./CreateEventDialog";
-import { EventStats } from "./EventStats";
-import { EventsTable } from "./EventsTable";
+
+import { CreateEventDialog } from "@/components/features/admin/events-management/create-event-dialog";
+import { EventStats } from "@/components/features/admin/events-management/event-stats";
+import { EventsTable } from "@/components/features/admin/events-management/events-table";
 
 export default async function EventsManagementPage() {
   const session = await auth();

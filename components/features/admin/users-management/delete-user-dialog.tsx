@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { deleteUser } from "@/app/admin/(users-management)/users-management.action";
+import { deleteUser } from "@/components/features/admin/users-management/users-management.action";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
