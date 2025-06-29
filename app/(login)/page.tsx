@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import LoginButton from "./LoginButton";
+import LoginButton from "./login-button";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
@@ -32,10 +32,10 @@ export default async function LoginPage() {
           <div className="h-1.5 w-full bg-gradient-to-r from-violet-500 to-fuchsia-500"></div>
           <CardHeader className="text-center pt-8 pb-4">
             <CardTitle className="text-2xl font-semibold text-slate-800">
-              Welcome to Next-U
+              Bienvenue à Next-U
             </CardTitle>
             <CardDescription className="text-slate-500 mt-1.5">
-              Sign in to continue
+              Connectez-vous pour continuer
             </CardDescription>
           </CardHeader>
           <CardContent className="px-8">
@@ -47,7 +47,7 @@ export default async function LoginPage() {
                 </div>
                 <div className="relative flex justify-center text-xs">
                   <span className="bg-white px-4 text-slate-500">
-                    Secure connection
+                    Connexion sécurisée
                   </span>
                 </div>
               </div>
@@ -55,19 +55,19 @@ export default async function LoginPage() {
           </CardContent>
           <CardFooter className="flex flex-col items-center text-center text-xs text-slate-500 px-8 pb-8 pt-2">
             <p>
-              By signing in, you agree to our{" "}
+              En vous connectant, vous acceptez nos{" "}
               <a
                 href="#"
                 className="text-violet-600 hover:text-fuchsia-600 transition-colors"
               >
-                Terms of Service
+                Conditions d&apos;utilisation
               </a>{" "}
-              and{" "}
+              et{" "}
               <a
                 href="#"
                 className="text-violet-600 hover:text-fuchsia-600 transition-colors"
               >
-                Privacy Policy
+                Politique de confidentialité
               </a>
             </p>
           </CardFooter>

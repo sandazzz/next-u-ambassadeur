@@ -10,7 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { Trophy, Medal, Crown } from "lucide-react";
 
 export default async function LeaderboardPage() {

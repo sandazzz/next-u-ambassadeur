@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { action } from "@/lib/safe-action";
 import { auth } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 const updateUserSlotStatusSchema = z.object({

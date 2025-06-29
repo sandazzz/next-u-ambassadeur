@@ -1,9 +1,9 @@
 import { auth } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
-import { AmbassadorRanking } from "@/components/feature/admin/credits-management/ambassador-ranking";
-import { UsersTable } from "@/components/feature/admin/users-management/users-table";
+import { AmbassadorRanking } from "@/components/features/admin/credits-management/ambassador-ranking";
+import { UsersTable } from "@/components/features/admin/users-management/users-table";
 
 export default async function CreditsManagementPage() {
   const session = await auth();

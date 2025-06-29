@@ -2,7 +2,7 @@
 
 import { action } from "@/lib/safe-action";
 import { auth } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
 const registerSchema = z.object({

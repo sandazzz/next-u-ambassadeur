@@ -1,6 +1,6 @@
 "use server";
 import { action } from "@/lib/safe-action";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { checkAdminAccess } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
@@ -133,6 +133,13 @@ export const deleteUser = action
       await prisma.user.delete({
         where: { id: parsedInput.id },
       });
+
+      // Supprimer l'email de la whitelist
+      if (existingUser.email) {
+        await prisma.whitelistEmail.deleteMany({
+          where: { email: existingUser.email },
+        });
+      }
 
       await revalidatePath("/admin");
       return { data: { success: true } };
