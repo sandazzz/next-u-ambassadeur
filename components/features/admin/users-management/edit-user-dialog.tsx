@@ -27,10 +27,12 @@ import {
 import { User } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { updateUser } from "@/app/admin/(users-management)/users-management.action";
-import { useTransition, useEffect } from "react";
+import { updateUser } from "@/components/features/admin/users-management/users-management.action";
+import { useEffect } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
+import { useAction } from "next-safe-action/hooks";
+import CircularLoader from "@/components/ui/circular-loader";
 
 const formSchema = z.object({
   name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
@@ -57,14 +59,25 @@ export function EditUserDialog({
   open,
   onOpenChange,
 }: EditUserDialogProps) {
-  const [isPending, startTransition] = useTransition();
-
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       email: "",
       role: "ambassador",
+    },
+  });
+
+  const { executeAsync, status } = useAction(updateUser, {
+    onSuccess: () => {
+      toast.success("Utilisateur mis à jour avec succès");
+      onOpenChange(false);
+    },
+    onError: () => {
+      toast.error("Erreur", {
+        description:
+          "Une erreur est survenue lors de la mise à jour de l'utilisateur",
+      });
     },
   });
 
@@ -81,21 +94,9 @@ export function EditUserDialog({
 
   const onSubmit = async (values: FormValues) => {
     if (!user) return;
-
-    startTransition(async () => {
-      const result = await updateUser({
-        id: user.id,
-        ...values,
-      });
-
-      if (!result) return;
-
-      if ("error" in result) {
-        toast.error(result.error as string);
-      } else {
-        toast.success("Utilisateur mis à jour avec succès");
-        onOpenChange(false);
-      }
+    await executeAsync({
+      id: user.id,
+      ...values,
     });
   };
 
@@ -120,7 +121,7 @@ export function EditUserDialog({
                 <FormItem>
                   <FormLabel>Nom</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} disabled={status === "executing"} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -133,7 +134,7 @@ export function EditUserDialog({
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} disabled={status === "executing"} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -148,6 +149,7 @@ export function EditUserDialog({
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    disabled={status === "executing"}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -168,11 +170,16 @@ export function EditUserDialog({
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
+                disabled={status === "executing"}
               >
                 Annuler
               </Button>
-              <Button type="submit" disabled={isPending}>
-                {isPending ? "Enregistrement..." : "Enregistrer"}
+              <Button type="submit" disabled={status === "executing"}>
+                {status === "executing" ? (
+                  <CircularLoader size="sm" />
+                ) : (
+                  "Enregistrer"
+                )}
               </Button>
             </div>
           </form>

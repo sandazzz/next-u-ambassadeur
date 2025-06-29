@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Edit } from "lucide-react";
 import { User } from "@prisma/client";
 import { useState } from "react";
-import { EditUserDialog } from "@/app/admin/(users-management)/EditUserDialog";
+import { EditUserDialog } from "@/components/features/admin/users-management/edit-user-dialog";
 
 export function EditButton({ user }: { user: User }) {
   const [editingUser, setEditingUser] = useState<User | null>(null);

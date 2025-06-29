@@ -1,8 +1,8 @@
 import { TableCell } from "@/components/ui/table";
 
 import { TableRow } from "@/components/ui/table";
-import { DeleteButton } from "./DeleteButton";
-import { EditButton } from "./EditButton";
+import { DeleteButton } from "@/components/features/admin/users-management/delete-button";
+import { EditButton } from "@/components/features/admin/users-management/edit-button";
 import { User } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 
