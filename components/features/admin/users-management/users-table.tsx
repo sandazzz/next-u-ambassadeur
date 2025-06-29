@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { UserRow } from "./user-row";
+import { UserRow } from "../credits-management/user-row";
 
 interface User {
   id: string;

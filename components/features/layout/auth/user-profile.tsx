@@ -8,7 +8,7 @@ import {
 import { User2 } from "lucide-react";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
-import { DropdownMenuItemLogOut } from "@/components/feature/layout/auth/logout-button";
+import { DropdownMenuItemLogOut } from "@/components/features/layout/auth/logout-button";
 import React from "react";
 
 export const UserProfile = async () => {

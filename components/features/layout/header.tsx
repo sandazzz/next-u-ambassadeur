@@ -1,5 +1,5 @@
-import { ThemeToggle } from "@/components/feature/theme/theme-toggle";
-import { UserProfile } from "@/components/feature/layout/auth/user-profile";
+import { ThemeToggle } from "@/components/features/theme/theme-toggle";
+import { UserProfile } from "@/components/features/layout/auth/user-profile";
 
 export const Header = async () => {
   return (

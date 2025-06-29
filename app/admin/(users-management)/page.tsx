@@ -1,8 +1,10 @@
 import { auth } from "@/lib/auth";
-import prisma from "@/lib/prisma";
-import { CreateUserButton } from "@/components/feature/admin/users-management/create-user-button";
-import { UsersManagement } from "@/components/feature/admin/users-management/users-management";
+import { prisma } from "@/lib/prisma";
+import { CreateUserButton } from "@/components/features/admin/users-management/create-user-button";
+import { UsersManagement } from "@/components/features/admin/users-management/users-management";
 import { redirect } from "next/navigation";
+
+import { InvitedUsersTable } from "./invited-users-table";
 
 export default async function AdminDashboard() {
   const session = await auth();
@@ -12,6 +14,16 @@ export default async function AdminDashboard() {
   }
 
   const users = await prisma.user.findMany();
+
+  const waitingUsers = await prisma.whitelistEmail.findMany({
+    where: {
+      email: {
+        notIn: users
+          .map((user) => user.email)
+          .filter((email): email is string => email !== null),
+      },
+    },
+  });
 
   return (
     <div className="space-y-6">
@@ -27,6 +39,7 @@ export default async function AdminDashboard() {
         <CreateUserButton />
       </div>
       <UsersManagement users={users} />
+      <InvitedUsersTable waitingUsers={waitingUsers} />
     </div>
   );
 }
