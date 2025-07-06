@@ -25,7 +25,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
-import { createUser } from "./create-user.action";
+import { createUser } from "@/app/admin/(users-management)/actions";
 import { z } from "zod";
 
 type CreateUserFormValues = {

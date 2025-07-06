@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Coins } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
-import { adjustCredits } from "@/components/features/admin/credits-management/credits-management.action";
+import { adjustCredits } from "@/app/admin/credits-management/actions";
 import { toast } from "sonner";
 
 interface User {
