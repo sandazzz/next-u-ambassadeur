@@ -4,7 +4,7 @@ import {
   updateUserService,
   deleteInvitedUserService,
   updateUserSchema,
-} from "@/app/admin/(users-management)/service";
+} from "@/app/admin/(users-management)/services";
 import { prisma } from "@/lib/prisma";
 import { checkAdminAccess } from "@/lib/auth";
 import { revalidatePath } from "next/cache";

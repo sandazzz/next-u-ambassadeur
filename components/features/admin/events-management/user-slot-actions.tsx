@@ -2,7 +2,7 @@
 
 import { useAction } from "next-safe-action/hooks";
 import { Button } from "@/components/ui/button";
-import { updateUserSlotStatus } from "./actions";
+import { updateUserSlotStatus } from "@/app/admin/events-management/[eventId]/actions";
 import { toast } from "sonner";
 
 interface UserSlotActionsProps {

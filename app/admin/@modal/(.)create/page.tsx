@@ -22,7 +22,7 @@ import {
 import { toast } from "sonner";
 import { useAction } from "next-safe-action/hooks";
 import CircularLoader from "@/components/ui/circular-loader";
-import { createUser } from "@/app/admin/(users-management)/action";
+import { createUser } from "@/app/admin/(users-management)/actions";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";

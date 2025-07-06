@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, Trash2 } from "lucide-react";
-import { createEvent } from "@/components/features/admin/events-management/events-management.action";
+import { createEvent } from "@/app/admin/events-management/actions";
 import { toast } from "sonner";
 import { useAction } from "next-safe-action/hooks";
 import CircularLoader from "@/components/ui/circular-loader";

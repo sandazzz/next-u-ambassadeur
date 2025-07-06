@@ -10,7 +10,7 @@ import {
   deleteUserSchema,
   deleteInvitedUserSchema,
   deleteInvitedUserService,
-} from "./service";
+} from "./services";
 
 export const createUser = action
   .schema(createUserSchema)
