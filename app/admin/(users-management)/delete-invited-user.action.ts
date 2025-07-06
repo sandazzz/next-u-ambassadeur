@@ -19,5 +19,5 @@ export const deleteInvitedUser = action
       where: { email },
     });
 
-    revalidatePath("/admin/users-management");
+    revalidatePath("/admin");
   });
