@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Pencil } from "lucide-react";
 import CircularLoader from "@/components/ui/circular-loader";
-import { updateProfile } from "./profile.action";
+import { updateProfile } from "@/app/user/profile/actions";
 import { useAction } from "next-safe-action/hooks";
 
 export function EditProfileDialog({
