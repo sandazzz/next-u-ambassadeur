@@ -19,6 +19,7 @@ import { Label } from "@/components/ui/label";
 import { Event, EventSlot, UserSlot } from "@prisma/client";
 import { registerToEvent } from "./register-event.actions";
 import { Loader } from "@/components/ui/loader";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   slotIds: z
@@ -35,6 +36,8 @@ export function RegisterForm({
     })[];
   };
 }) {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,6 +52,7 @@ export function RegisterForm({
           "Votre demande a été enregistrée et est en attente de validation",
       });
       form.reset();
+      router.push("/user/forms");
     },
     onError: (error) => {
       toast.error("Erreur", {
