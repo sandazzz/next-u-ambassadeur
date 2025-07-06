@@ -8,7 +8,7 @@ import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { useAction } from "next-safe-action/hooks";
 import CircularLoader from "@/components/ui/circular-loader";
-import { Trash2 } from "lucide-react";
+import { Trash2, Edit } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -18,6 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import Link from "next/link";
 
 type EventStatus = "open" | "closed" | "completed";
 
@@ -92,6 +93,13 @@ export function EventActions({ event }: { event: Event }) {
           Terminer
         </Button>
       )}
+
+      <Link href={`/admin/events-management/edit/${event.id}`}>
+        <Button variant="outline" size="sm">
+          <Edit className="h-4 w-4 mr-1" />
+          Modifier
+        </Button>
+      </Link>
 
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <DialogTrigger asChild>

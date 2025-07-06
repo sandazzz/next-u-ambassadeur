@@ -71,6 +71,12 @@ export const updateEvent = action
     await checkAdminAccess();
 
     try {
+      // Supprimer toutes les plages horaires existantes
+      await prisma.eventSlot.deleteMany({
+        where: { eventId: parsedInput.id },
+      });
+
+      // Mettre à jour l'événement et créer les nouvelles plages horaires
       const event = await prisma.event.update({
         where: { id: parsedInput.id },
         data: {
@@ -78,6 +84,15 @@ export const updateEvent = action
           description: parsedInput.description,
           date: new Date(parsedInput.date),
           location: parsedInput.location,
+          slots: {
+            create: parsedInput.timeSlots.map((slot) => ({
+              startTime: new Date(`${parsedInput.date}T${slot.startTime}`),
+              endTime: new Date(`${parsedInput.date}T${slot.endTime}`),
+            })),
+          },
+        },
+        include: {
+          slots: true,
         },
       });
 
