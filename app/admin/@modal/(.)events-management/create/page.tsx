@@ -1,6 +1,16 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Plus, Trash2 } from "lucide-react";
+import { createEvent } from "@/components/features/admin/events-management/events-management.action";
+import { toast } from "sonner";
+import { useAction } from "next-safe-action/hooks";
+import CircularLoader from "@/components/ui/circular-loader";
 import {
   Dialog,
   DialogContent,
@@ -8,17 +18,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { createEvent } from "./events-management.action";
-import { toast } from "sonner";
-import { useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
-import { useAction } from "next-safe-action/hooks";
-import CircularLoader from "@/components/ui/circular-loader";
 
 interface TimeSlot {
   startTime: string;
@@ -26,8 +26,9 @@ interface TimeSlot {
   location: string;
 }
 
-export function CreateEventDialog() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function CreateEventModal() {
+  const router = useRouter();
+  const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
@@ -53,7 +54,7 @@ export function CreateEventDialog() {
   const { executeAsync } = useAction(createEvent, {
     onSuccess: () => {
       resetForm();
-      setIsOpen(false);
+      router.back(); // ferme la modale
       toast.success("Succès", {
         description: "L'événement a été créé avec succès",
       });
@@ -73,13 +74,6 @@ export function CreateEventDialog() {
       ...formData,
       timeSlots,
     });
-  };
-
-  const handleOpenChange = (open: boolean) => {
-    if (!open) {
-      resetForm();
-    }
-    setIsOpen(open);
   };
 
   const addTimeSlot = () => {
@@ -104,14 +98,11 @@ export function CreateEventDialog() {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
-        <Button className="cursor-pointer">
-          <Plus className="h-4 w-4 mr-2" />
-          Créer un événement
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+    <Dialog
+      open={pathname === "/admin/events-management/create"}
+      onOpenChange={() => router.back()}
+    >
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Créer un événement</DialogTitle>
           <DialogDescription>
@@ -119,7 +110,8 @@ export function CreateEventDialog() {
             événement.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+
+        <div className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="title">Titre</Label>
             <Input
@@ -132,6 +124,7 @@ export function CreateEventDialog() {
               disabled={isLoading}
             />
           </div>
+
           <div className="grid gap-2">
             <Label htmlFor="description">Description</Label>
             <Textarea
@@ -144,6 +137,7 @@ export function CreateEventDialog() {
               disabled={isLoading}
             />
           </div>
+
           <div className="grid gap-2">
             <Label htmlFor="date">Date</Label>
             <Input
@@ -156,6 +150,7 @@ export function CreateEventDialog() {
               disabled={isLoading}
             />
           </div>
+
           <div className="grid gap-2">
             <Label htmlFor="location">Lieu principal</Label>
             <Input
@@ -228,10 +223,11 @@ export function CreateEventDialog() {
             ))}
           </div>
         </div>
-        <DialogFooter className="sticky bottom-0 bg-background pt-4 border-t">
+
+        <DialogFooter className="pt-4 border-t mt-6">
           <Button
             variant="outline"
-            onClick={() => handleOpenChange(false)}
+            onClick={() => router.back()}
             disabled={isLoading}
           >
             Annuler
