@@ -20,11 +20,11 @@ interface User {
 function getRankIcon(position: number) {
   switch (position) {
     case 1:
-      return <Crown className="h-5 w-5 text-yellow-500" />;
+      return <Crown className="h-5 w-5 text-yellow-500 dark:text-yellow-400" />;
     case 2:
-      return <Medal className="h-5 w-5 text-gray-400" />;
+      return <Medal className="h-5 w-5 text-gray-400 dark:text-gray-300" />;
     case 3:
-      return <Award className="h-5 w-5 text-amber-600" />;
+      return <Award className="h-5 w-5 text-amber-600 dark:text-amber-400" />;
     default:
       return <Trophy className="h-4 w-4 text-muted-foreground" />;
   }
@@ -56,7 +56,7 @@ export function AmbassadorRanking({ users }: { users: User[] }) {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center space-x-2">
-          <Trophy className="h-5 w-5 text-yellow-500" />
+          <Trophy className="h-5 w-5 text-yellow-500 dark:text-yellow-400" />
           <span>Classement des ambassadeurs</span>
         </CardTitle>
         <CardDescription>Top 10 des ambassadeurs par crédits</CardDescription>
@@ -70,8 +70,8 @@ export function AmbassadorRanking({ users }: { users: User[] }) {
                 key={ambassador.id}
                 className={`flex items-center justify-between p-3 rounded-lg border ${
                   position <= 3
-                    ? "bg-linear-to-r from-yellow-50 to-orange-50 border-yellow-200"
-                    : "bg-gray-50"
+                    ? "bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-950/20 dark:to-orange-950/20 border-yellow-200 dark:border-yellow-800"
+                    : "bg-gray-50 dark:bg-gray-900/50 border-gray-200 dark:border-gray-700"
                 }`}
               >
                 <div className="flex items-center space-x-3">
@@ -96,7 +96,7 @@ export function AmbassadorRanking({ users }: { users: User[] }) {
                   </div>
                 </div>
                 <div className="flex items-center space-x-1">
-                  <Coins className="h-4 w-4 text-yellow-500" />
+                  <Coins className="h-4 w-4 text-yellow-500 dark:text-yellow-400" />
                   <span className="font-bold text-sm">
                     {ambassador.credit ?? 0}
                   </span>

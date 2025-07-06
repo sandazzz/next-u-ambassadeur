@@ -2,9 +2,11 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
-import { CreateEventDialog } from "@/components/features/admin/events-management/create-event-dialog";
 import { EventStats } from "@/components/features/admin/events-management/event-stats";
 import { EventsTable } from "@/components/features/admin/events-management/events-table";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
 export default async function EventsManagementPage() {
   const session = await auth();
@@ -30,10 +32,21 @@ export default async function EventsManagementPage() {
             Créez et gérez les événements de la plateforme
           </p>
         </div>
-        <CreateEventDialog />
+        <CreateEventModal />
       </div>
       <EventStats events={events} />
       <EventsTable events={events} />
     </div>
   );
 }
+
+const CreateEventModal = () => {
+  return (
+    <Link href="/admin/events-management/create">
+      <Button className="cursor-pointer">
+        <Plus className="h-4 w-4 mr-2" />
+        Créer un événement
+      </Button>
+    </Link>
+  );
+};
