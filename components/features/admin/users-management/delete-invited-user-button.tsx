@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useAction } from "next-safe-action/hooks";
-import { deleteInvitedUser } from "./delete-invited-user.action";
+import { deleteInvitedUser } from "@/app/admin/(users-management)/action";
 
 export function DeleteInvitedUserButton({ email }: { email: string }) {
   const { execute } = useAction(deleteInvitedUser);
