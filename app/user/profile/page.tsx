@@ -2,7 +2,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { EditProfileDialog } from "./edit-profile-dialog";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -47,7 +48,11 @@ export default async function ProfilePage() {
 
       {/* Button */}
       <div className="mt-4">
-        <EditProfileDialog profile={profile} />
+        <Link href={`/user/profile/edit/${profile.id}`}>
+          <Button variant="outline" className="w-full">
+            Modifier mon profil
+          </Button>
+        </Link>
       </div>
 
       {/* Favorite Moment */}
