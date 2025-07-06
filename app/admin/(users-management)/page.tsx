@@ -4,7 +4,7 @@ import { UsersManagement } from "@/components/features/admin/users-management/us
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
-import { InvitedUsersTable } from "./invited-users-table";
+import { InvitedUsersTable } from "../../../components/features/admin/users-management/invited-users-table";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
@@ -51,7 +51,7 @@ const CreateUserButton = () => {
     <Link href="/admin/create">
       <Button className="cursor-pointer">
         <Plus className="h-4 w-4 mr-2" />
-        Créer un événement
+        Ajouter un utilisateur
       </Button>
     </Link>
   );

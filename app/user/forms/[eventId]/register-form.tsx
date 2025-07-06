@@ -17,7 +17,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Event, EventSlot, UserSlot } from "@prisma/client";
-import { registerToEvent } from "./register-event.actions";
+import { registerToEvent } from "@/app/user/forms/[eventId]/actions";
 import { Loader } from "@/components/ui/loader";
 import { useRouter } from "next/navigation";
 

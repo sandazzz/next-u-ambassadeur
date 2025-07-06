@@ -2,7 +2,10 @@
 
 import { Event } from "@prisma/client";
 import { Button } from "@/components/ui/button";
-import { deleteEvent, updateEventStatus } from "./events-management.action";
+import {
+  deleteEvent,
+  updateEventStatus,
+} from "../../../../app/admin/events-management/actions";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";

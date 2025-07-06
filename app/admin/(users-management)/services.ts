@@ -32,7 +32,13 @@ export const deleteUserSchema = z.object({
   id: z.string(),
 });
 
-export async function createUserImpl(input: z.infer<typeof createUserSchema>) {
+export const deleteInvitedUserSchema = z.object({
+  email: z.string(),
+});
+
+export async function createUserService(
+  input: z.infer<typeof createUserSchema>
+) {
   await checkAdminAccess();
 
   const existingUser = await prisma.whitelistEmail.findUnique({
@@ -51,7 +57,9 @@ export async function createUserImpl(input: z.infer<typeof createUserSchema>) {
   return { data: user };
 }
 
-export async function updateUserImpl(input: z.infer<typeof updateUserSchema>) {
+export async function updateUserService(
+  input: z.infer<typeof updateUserSchema>
+) {
   await checkAdminAccess();
 
   const existingUser = await prisma.user.findUnique({
@@ -85,7 +93,9 @@ export async function updateUserImpl(input: z.infer<typeof updateUserSchema>) {
   return { data: user };
 }
 
-export async function deleteUserImpl(input: z.infer<typeof deleteUserSchema>) {
+export async function deleteUserService(
+  input: z.infer<typeof deleteUserSchema>
+) {
   await checkAdminAccess();
 
   const existingUser = await prisma.user.findUnique({
@@ -108,4 +118,15 @@ export async function deleteUserImpl(input: z.infer<typeof deleteUserSchema>) {
 
   await revalidatePath("/admin");
   return { data: { success: true } };
+}
+
+export async function deleteInvitedUserService(
+  input: z.infer<typeof deleteInvitedUserSchema>
+) {
+  await checkAdminAccess();
+
+  await prisma.whitelistEmail.delete({
+    where: { email: input.email },
+  });
+  revalidatePath("/admin");
 }
