@@ -4,14 +4,11 @@ import {
   deleteEventService,
   updateEventStatusService,
   createEventSchema,
-  updateEventSchema,
-  deleteEventSchema,
   updateEventStatusSchema,
 } from "@/app/admin/events-management/services";
 import { prisma } from "@/lib/prisma";
 import { checkAdminAccess } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
 
 // Mocks
 jest.mock("next/cache", () => ({
@@ -387,7 +384,10 @@ describe("Schémas de validation", () => {
       const validStatuses = ["open", "closed", "completed"];
 
       validStatuses.forEach((status) => {
-        const input = { id: "event-1", status: status as any };
+        const input = {
+          id: "event-1",
+          status: status as "open" | "closed" | "completed",
+        };
         const result = updateEventStatusSchema.safeParse(input);
         expect(result.success).toBe(true);
       });
